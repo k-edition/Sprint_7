@@ -35,7 +35,7 @@ def remove_courier(request):
 
 
 @pytest.fixture(scope='function')
-def default_order():
+def make_order():
     payload = data.generate_payload_for_create_order()
     response = OrderApi.create_order(payload)
     id_track = response.json()["track"]
@@ -43,9 +43,7 @@ def default_order():
 
 
 @pytest.fixture(scope='function')
-def order_id():
-    payload = data.generate_payload_for_create_order()
-    response = OrderApi.create_order(payload)
-    id_track = response.json()["track"]
+def make_order_and_get_order_id(make_order):
+    id_track = make_order
     second_response = OrderApi.get_order(id_track)
     return second_response.json()['order']['id']
